@@ -1,5 +1,14 @@
 package com.restaurant.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,16 +25,28 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Authentication and User Management API")
 public class AuthController {
     private final IAuthService authService;
     private final IUserService userService;
 
     @PostMapping("/register")
+    @Operation(summary = "Register new user", description = "Create a new user account in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class), examples = @ExampleObject(value = "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"fullname\":\"John Doe\"}"))),
+            @ApiResponse(responseCode = "400", description = "Email already exists", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"error\":\"EMAIL_EXISTS\",\"message\":\"Email already exists\",\"status\":400}")))
+    })
     public ResponseEntity<JwtResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
+    @Operation(summary = "User login", description = "Authenticate user credentials and return JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful", content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtResponse.class), examples = @ExampleObject(value = "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"fullname\":\"John Doe\"}"))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(value = "{\"error\":\"AUTHENTICATION_FAILED\",\"message\":\"Invalid credentials\",\"status\":401}"))),
+            @ApiResponse(responseCode = "403", description = "User is blocked", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class), examples = @ExampleObject(value = "{\"error\":\"USER_BLOCKED\",\"message\":\"You are blocked: connect to the IT Support team. Reason: Blocked by admin\",\"status\":403}")))
+    })
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             JwtResponse response = authService.login(request);
@@ -55,6 +76,11 @@ public class AuthController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/users")
+    @Operation(summary = "Get all users", description = "Retrieve all users in the system (Admin only)", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "403", description = "Access denied - Admin role required")
+    })
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
@@ -72,8 +98,14 @@ public class AuthController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/users/{userId}/block")
+    @Operation(summary = "Block user", description = "Block a specific user with an optional reason (Admin only)", security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User blocked successfully", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "{\"message\":\"User blocked successfully\",\"userId\":\"1\",\"reason\":\"Blocked by admin\"}"))),
+            @ApiResponse(responseCode = "403", description = "Access denied - Admin role required"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     public ResponseEntity<Map<String, String>> blockUser(
-            @PathVariable Long userId,
+            @Parameter(description = "User ID to block", required = true) @PathVariable Long userId,
             @RequestBody(required = false) Map<String, String> requestBody) {
 
         String reason = requestBody != null ? requestBody.get("reason") : "Blocked by admin";
