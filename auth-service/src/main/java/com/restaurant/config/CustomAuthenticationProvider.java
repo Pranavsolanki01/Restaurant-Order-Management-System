@@ -1,6 +1,5 @@
 package com.restaurant.config;
 
-import com.restaurant.service.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,11 +10,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.restaurant.service.UserService;
+
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService; // Use unified UserService
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -23,8 +24,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        // Use your custom UserDetailsService
-        UserDetails userDetails = userDetailsService.loadUserByEmail(email);
+        // Use the unified UserService (which implements UserDetailsService)
+        UserDetails userDetails = userService.loadUserByEmail(email);
 
         // Verify password
         if (passwordEncoder.matches(password, userDetails.getPassword())) {

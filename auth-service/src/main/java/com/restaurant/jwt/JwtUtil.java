@@ -1,9 +1,10 @@
 package com.restaurant.jwt;
 
-import com.restaurant.config.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+
+import com.restaurant.config.JwtProperties;
 
 import java.security.Key;
 import java.util.Date;

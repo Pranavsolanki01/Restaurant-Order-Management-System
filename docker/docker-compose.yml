@@ -6,10 +6,10 @@ services:
     container_name: mysql-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: rms
+      MYSQL_ROOT_PASSWORD: rmsdbpassword
+      MYSQL_DATABASE: rmsdb
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - rms-net
 
@@ -17,6 +17,9 @@ services:
     image: mongo
     container_name: mongo-db
     restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongormsdb
+      MONGO_INITDB_ROOT_PASSWORD: mongormsdbpass
     ports:
       - "27017:27017"
     networks:
@@ -31,29 +34,22 @@ services:
     networks:
       - rms-net
 
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: yes
-    networks:
-      - rms-net
-
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
     ports:
       - "9092:9092"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      ALLOW_PLAINTEXT_LISTENER: yes
-    depends_on:
-      - zookeeper
+      KAFKA_KRAFT_MODE: "true"
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_NODE_ID: "1"
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
     networks:
       - rms-net
 
