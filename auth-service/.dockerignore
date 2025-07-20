@@ -1,0 +1,41 @@
+# Docker ignore file for auth-service
+
+# Target directory is included for main Dockerfile, excluded for multistage
+# target/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Environment files (these should be passed as environment variables)
+.env
+.env.local
+.env.example
+
+# Documentation
+README.md
+*.md
+
+# Docker files (don't copy other Docker files)
+Dockerfile.*
+docker-compose.yml
+docker-compose.yaml
