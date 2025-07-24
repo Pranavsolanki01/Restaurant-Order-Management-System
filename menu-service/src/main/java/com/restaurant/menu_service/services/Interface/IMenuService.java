@@ -14,6 +14,6 @@ public interface IMenuService {
 
     public List<MenuItemsResponse> getItemByCategory(CategoryEnum type);
 
-    
+    public List<MenuItemsResponse> getFilteredItems(Double price, Boolean available, Boolean veg, String sort);
 
 }

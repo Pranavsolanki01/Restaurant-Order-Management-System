@@ -1,6 +1,8 @@
 package com.restaurant.menu_service.services;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,38 @@ public class MenuService implements IMenuService {
     public List<MenuItemsResponse> getItemByCategory(CategoryEnum type) {
         List<MenuItems> fetched= menuItemsRepo.findByCategoryType(type);
         return MenuItemToResponseMapper.toResponseList(fetched);
+    }
+
+    public List<MenuItemsResponse> getFilteredItems(Double price, Boolean available, Boolean veg, String sort){
+        List<MenuItems> items = menuItemsRepo.findAll();
+
+        if (price != null) {
+            items = items.stream()
+                    .filter(item -> item.getPrice() <= price)
+                    .collect(Collectors.toList());
+        }
+
+        if (available != null) {
+            items = items.stream()
+                    .filter(item -> item.isAvailable() == available)
+                    .collect(Collectors.toList());
+        }
+
+        if (veg != null) {
+            items = items.stream()
+                    .filter(item -> item.isVeg() == veg)
+                    .collect(Collectors.toList());
+        }
+
+        if (sort.equalsIgnoreCase("desc")) {
+            items.sort(Comparator.comparingDouble(MenuItems::getPrice).reversed());
+        } else {
+            items.sort(Comparator.comparingDouble(MenuItems::getPrice));
+        }
+
+
+        List<MenuItemsResponse> item = MenuItemToResponseMapper.toResponseList(items);
+
+        return item;
     }
 }

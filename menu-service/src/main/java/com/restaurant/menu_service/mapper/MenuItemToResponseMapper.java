@@ -12,7 +12,10 @@ public class MenuItemToResponseMapper {
         MenuItemsResponse response = new MenuItemsResponse();
         response.setName(item.getName());
         response.setPrice(item.getPrice());
-        response.setCategoryType(item.getCategoryType()); // convert enum to string
+        response.setCategoryType(item.getCategoryType());
+        response.setDescription(item.getDescription());
+        response.setAvailable(item.isAvailable());
+        response.setVeg(item.isVeg()); // convert enum to string
         return response;
     }
 
