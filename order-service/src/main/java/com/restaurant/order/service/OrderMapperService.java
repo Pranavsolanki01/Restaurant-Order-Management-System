@@ -23,7 +23,6 @@ public class OrderMapperService implements IOrderMapperService {
                                 .totalPrice(order.getTotalPrice())
                                 .status(order.getStatus())
                                 .paymentStatus(order.getPaymentStatus())
-                                .deliveryAddress(order.getDeliveryAddress())
                                 .phoneNumber(order.getPhoneNumber())
                                 .specialInstructions(order.getSpecialInstructions())
                                 .orderItems(order.getOrderItems().stream()
@@ -59,7 +58,6 @@ public class OrderMapperService implements IOrderMapperService {
                                 .totalPrice(totalPrice)
                                 .status(Order.OrderStatus.PENDING)
                                 .paymentStatus(Order.PaymentStatus.PENDING)
-                                .deliveryAddress(orderRequestDTO.getDeliveryAddress())
                                 .phoneNumber(orderRequestDTO.getPhoneNumber())
                                 .specialInstructions(orderRequestDTO.getSpecialInstructions())
                                 .build();

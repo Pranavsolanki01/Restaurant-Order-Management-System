@@ -21,10 +21,6 @@ public class OrderRequestDTO {
     @Valid
     private List<OrderItemRequestDTO> orderItems;
 
-    @NotBlank(message = "Delivery address is required")
-    @Size(max = 500, message = "Delivery address cannot exceed 500 characters")
-    private String deliveryAddress;
-
     @NotBlank(message = "Phone number is required")
     @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
     private String phoneNumber;
