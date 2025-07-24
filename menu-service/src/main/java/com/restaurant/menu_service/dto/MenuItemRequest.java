@@ -1,24 +1,22 @@
-package com.restaurant.menu_service.entity;
+package com.restaurant.menu_service.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.restaurant.menu_service.enums.CategoryEnum;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "menu_items")
-public class MenuItems {
-
-    @Id
-    private String id;
+public class MenuItemRequest {
 
     private String name;
+
+    private CategoryEnum categoryType;
 
     private String description;
 
@@ -26,7 +24,8 @@ public class MenuItems {
 
     private boolean available;
 
-    private CategoryEnum categoryType;
-
+    @JsonProperty("Veg")
     private boolean Veg;
+
+
 }
