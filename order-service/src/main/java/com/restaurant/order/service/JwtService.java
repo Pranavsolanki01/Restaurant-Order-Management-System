@@ -1,10 +1,10 @@
 package com.restaurant.order.service;
 
+import com.restaurant.order.jwt.JwtAuthenticationFilter;
 import com.restaurant.order.service.interfaces.IJwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +14,10 @@ public class JwtService implements IJwtService {
     @Override
     public String getCurrentUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
-            return jwt.getClaimAsString("email");
+        if (authentication != null && authentication.getDetails() instanceof JwtAuthenticationFilter.JwtAuthenticationDetails) {
+            JwtAuthenticationFilter.JwtAuthenticationDetails details = 
+                (JwtAuthenticationFilter.JwtAuthenticationDetails) authentication.getDetails();
+            return details.getEmail();
         }
         throw new RuntimeException("User is not authenticated");
     }
@@ -23,20 +25,10 @@ public class JwtService implements IJwtService {
     @Override
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
-            Object userIdClaim = jwt.getClaim("userId");
-            if (userIdClaim instanceof Long) {
-                return (Long) userIdClaim;
-            } else if (userIdClaim instanceof Integer) {
-                return ((Integer) userIdClaim).longValue();
-            } else if (userIdClaim instanceof String) {
-                try {
-                    return Long.parseLong((String) userIdClaim);
-                } catch (NumberFormatException e) {
-                    log.error("Cannot parse userId from JWT: {}", userIdClaim);
-                    throw new RuntimeException("Invalid userId in JWT token");
-                }
-            }
+        if (authentication != null && authentication.getDetails() instanceof JwtAuthenticationFilter.JwtAuthenticationDetails) {
+            JwtAuthenticationFilter.JwtAuthenticationDetails details = 
+                (JwtAuthenticationFilter.JwtAuthenticationDetails) authentication.getDetails();
+            return details.getUserId();
         }
         throw new RuntimeException("User is not authenticated");
     }
@@ -44,8 +36,10 @@ public class JwtService implements IJwtService {
     @Override
     public String getCurrentUserRole() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
-            return jwt.getClaimAsString("role");
+        if (authentication != null && authentication.getDetails() instanceof JwtAuthenticationFilter.JwtAuthenticationDetails) {
+            JwtAuthenticationFilter.JwtAuthenticationDetails details = 
+                (JwtAuthenticationFilter.JwtAuthenticationDetails) authentication.getDetails();
+            return details.getRole();
         }
         throw new RuntimeException("User is not authenticated");
     }
@@ -61,11 +55,17 @@ public class JwtService implements IJwtService {
 
     @Override
     public boolean isAdmin() {
-        try {
-            String role = getCurrentUserRole();
-            return "ADMIN".equalsIgnoreCase(role);
-        } catch (Exception e) {
-            return false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getDetails() instanceof JwtAuthenticationFilter.JwtAuthenticationDetails) {
+            JwtAuthenticationFilter.JwtAuthenticationDetails details = 
+                (JwtAuthenticationFilter.JwtAuthenticationDetails) authentication.getDetails();
+            return details.isAdmin();
         }
+        return false;
+    }
+
+    public boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
     }
 }
