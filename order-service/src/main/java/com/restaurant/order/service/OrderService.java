@@ -1,14 +1,14 @@
 package com.restaurant.order.service;
 
-import com.restaurant.order.dto.OrderEventDTO;
-import com.restaurant.order.dto.OrderRequestDTO;
-import com.restaurant.order.dto.OrderResponseDTO;
-import com.restaurant.order.entity.Order;
-import com.restaurant.order.entity.OrderItem;
+import com.restaurant.order.dto.*;
+import com.restaurant.order.entity.*;
 import com.restaurant.order.exception.OrderNotFoundException;
 import com.restaurant.order.exception.UnauthorizedAccessException;
 import com.restaurant.order.repository.OrderRepository;
 import com.restaurant.order.service.interfaces.IOrderService;
+import com.restaurant.order.service.interfaces.IJwtService;
+import com.restaurant.order.service.interfaces.IOrderMapperService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 public class OrderService implements IOrderService {
 
     private final OrderRepository orderRepository;
-    private final JwtService jwtService;
-    private final OrderMapperService orderMapper;
+    private final IJwtService jwtService;
+    private final IOrderMapperService orderMapper;
     private final OrderEventPublisher orderEventPublisher;
 
     @Override

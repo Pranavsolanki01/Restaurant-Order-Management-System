@@ -8,9 +8,9 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/order_service_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:password}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -22,27 +22,27 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         "[format_sql]": true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081/api}
-          jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8081/api/.well-known/jwks.json}
-
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         "[spring.json.type.mapping]": orderEvent:com.restaurant.order.dto.OrderEventDTO
-    consumer:
-      group-id: order-service-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        "[spring.json.type.mapping]": orderEvent:com.restaurant.order.dto.OrderEventDTO
-        "[spring.json.trusted.packages]": "*"
+    # consumer:
+    #   group-id: order-service-group
+    #   key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    #   value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    #   properties:
+    #     "[spring.json.type.mapping]": orderEvent:com.restaurant.order.dto.OrderEventDTO
+    #     "[spring.json.trusted.packages]": "*"
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+  issuer: ${JWT_ISSUER:restaurant-auth-service}
+  validate-issuer: ${JWT_VALIDATE_ISSUER:false} # Add this line
 
 management:
   endpoints:
