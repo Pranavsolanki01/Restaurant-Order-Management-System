@@ -1,6 +1,7 @@
 package com.rms.kitchen_service.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import com.rms.kitchen_service.enums.StatusEnum;
 
@@ -27,8 +28,8 @@ public class KitchenOrderRequest {
 
     private String specialInstructuction;
 
-    private Date createdAt;
+    private ZonedDateTime createdAt;
 
-    private Date updatedAt;
+    private ZonedDateTime updatedAt;
 
 }
