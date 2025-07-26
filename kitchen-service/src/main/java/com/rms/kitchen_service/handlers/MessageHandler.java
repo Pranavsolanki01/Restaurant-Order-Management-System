@@ -1,6 +1,6 @@
 package com.rms.kitchen_service.handlers;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +23,8 @@ public class MessageHandler implements IMessageHandler {
         kor.setOrderID(orderMessage.getId());
         kor.setTableID(orderMessage.getTableID());
         kor.setStatus(StatusEnum.PENDING);
-        kor.setCreatedAt(new Date());
-        kor.setUpdatedAt(new Date());
+        kor.setCreatedAt(orderMessage.getCreatedAt());
+        kor.setUpdatedAt(ZonedDateTime.now());
         kor.setSpecialInstructuction(orderMessage.getSpecialInstructions());
         kor.setUserName(orderMessage.getUserName());
 

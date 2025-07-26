@@ -1,9 +1,10 @@
 package com.rms.kitchen_service.entity;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rms.kitchen_service.enums.PriorityEnum;
 import com.rms.kitchen_service.enums.StatusEnum;
 
@@ -35,8 +36,10 @@ public class KitchenOrder {
 
     private String specialInstructuction;
 
-    private Date createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Kolkata")
+    private ZonedDateTime createdAt;
 
-    private Date updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Kolkata")
+    private ZonedDateTime updatedAt;
 
 }
