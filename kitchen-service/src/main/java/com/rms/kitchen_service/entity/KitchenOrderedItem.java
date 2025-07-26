@@ -1,10 +1,10 @@
 package com.rms.kitchen_service.entity;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.rms.kitchen_service.enums.StatusEnum;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
