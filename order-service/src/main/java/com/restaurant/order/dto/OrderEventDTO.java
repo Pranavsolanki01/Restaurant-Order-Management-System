@@ -23,6 +23,7 @@ public class OrderEventDTO {
     private String status;
     private String paymentStatus;
     private List<OrderItemEventDTO> orderItems;
+    private String specialInstructions;
     private LocalDateTime timestamp;
 
     @Data
@@ -35,5 +36,6 @@ public class OrderEventDTO {
         private Integer quantity;
         private BigDecimal unitPrice;
         private BigDecimal totalPrice;
+        private String specialRequests;
     }
 }
