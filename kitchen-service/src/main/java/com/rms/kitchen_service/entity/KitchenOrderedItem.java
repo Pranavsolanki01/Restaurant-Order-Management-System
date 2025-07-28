@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class KitchenOrderedItem {
 
     @Id
-    private String KitchenOrderedItemID;
+    private String id;
 
     private String kitchenOrderID;
 

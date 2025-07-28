@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class KitchenOrder {
 
     @Id
-    private String kitchenOrderID;
+    private String id;
 
     private Long orderID;
 
