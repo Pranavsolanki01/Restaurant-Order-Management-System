@@ -25,3 +25,10 @@ logging:
   level:
     "[com.rms.kitchen_service]": DEBUG
     "[org.springframework.kafka]": DEBUG
+# API Documentation
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
