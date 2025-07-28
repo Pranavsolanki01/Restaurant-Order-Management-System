@@ -16,6 +16,8 @@ public class KitchenOrderedItemRequestToKitchenOrderedItemMapper {
         koi.setOrderedItemName(koir.getOrderedItemName());
         koi.setStatus(koir.getStatus());
         koi.setQuantity(koir.getQuantity());
+        koi.setUnitPrice(koir.getUnitPrice());
+        koi.setTotalPrice(koir.getTotalPrice());
         koi.setSpecialRequests(koir.getSpecialRequests());
         return koi;
     }

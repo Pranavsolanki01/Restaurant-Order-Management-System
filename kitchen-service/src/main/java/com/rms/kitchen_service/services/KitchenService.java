@@ -3,6 +3,7 @@ package com.rms.kitchen_service.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.rms.kitchen_service.dto.KitchenOrderRequest;
 import com.rms.kitchen_service.dto.KitchenOrderedItemRequest;
@@ -14,6 +15,7 @@ import com.rms.kitchen_service.repo.KitchenOrderRepo;
 import com.rms.kitchen_service.repo.KitchenOrderedItemRepo;
 import com.rms.kitchen_service.services.Interface.IKitchenService;
 
+@Service
 public class KitchenService implements IKitchenService{
 
     @Autowired

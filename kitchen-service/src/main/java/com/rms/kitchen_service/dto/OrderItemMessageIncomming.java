@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderItemMessageIncomming {
 
-    private Long id;
+    private Long orderId;
     private Long menuItemId;
     private String menuItemName;
     private Integer quantity;
     private BigDecimal unitPrice;
-    private BigDecimal price;
+    private BigDecimal totalPrice;
     private String specialRequests;
 
 }
