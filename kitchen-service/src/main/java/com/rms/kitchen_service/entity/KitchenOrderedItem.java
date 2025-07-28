@@ -1,5 +1,7 @@
 package com.rms.kitchen_service.entity;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,6 +31,10 @@ public class KitchenOrderedItem {
     private Integer quantity;
 
     private StatusEnum status;
+
+    private BigDecimal unitPrice;
+
+    private BigDecimal totalPrice;
 
     private String specialRequests;
 

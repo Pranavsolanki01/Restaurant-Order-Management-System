@@ -1,7 +1,7 @@
 package com.rms.kitchen_service.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 import com.rms.kitchen_service.enums.StatusEnum;
 
@@ -22,14 +22,16 @@ public class KitchenOrderRequest {
 
     private Long userID;
 
-    private String userName;
+    private String userEmail;
 
     private StatusEnum status;
 
-    private String specialInstructuction;
+    private String specialInstructions;
 
-    private ZonedDateTime createdAt;
+    private BigDecimal totalPrice;
 
-    private ZonedDateTime updatedAt;
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
 }

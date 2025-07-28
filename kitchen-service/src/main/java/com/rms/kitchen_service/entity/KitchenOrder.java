@@ -1,14 +1,15 @@
 package com.rms.kitchen_service.entity;
 
-import java.time.ZonedDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rms.kitchen_service.enums.PriorityEnum;
 import com.rms.kitchen_service.enums.StatusEnum;
 
-import org.springframework.data.annotation.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,18 +29,20 @@ public class KitchenOrder {
 
     private Long userID;
 
-    private String userName;
+    private String userEmail;
 
     private StatusEnum status;
 
+    private BigDecimal totalPrice;
+
     private PriorityEnum priority;
 
-    private String specialInstructuction;
+    private String specialInstructions;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Kolkata")
-    private ZonedDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Kolkata")
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
 }
