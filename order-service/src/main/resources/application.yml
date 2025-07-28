@@ -8,9 +8,9 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://100.85.205.36:3306/rmsdb?createDatabaseIfNotExist=true
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -23,12 +23,13 @@ spring:
         "[format_sql]": true
 
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: 100.85.205.36:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        "[spring.json.type.mapping]": orderEvent:com.restaurant.order.dto.OrderEventDTO
+        "[spring.json.add.type.headers]": false
+        # "[spring.json.type.mapping]": orderEvent:com.restaurant.order.dto.OrderEventDTO
     # consumer:
     #   group-id: order-service-group
     #   key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
