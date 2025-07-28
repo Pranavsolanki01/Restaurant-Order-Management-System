@@ -1,7 +1,27 @@
 server:
-    port: 8085
+  port: 8085
 
 spring:
-    data:
-        mongodb:
-            uri: mongodb://localhost:27017/kitchen-db
+  data:
+    mongodb:
+      uri: mongodb://100.85.205.36:27017/kitchen-db
+
+  kafka:
+    bootstrap-servers: 100.85.205.36:9092
+    consumer:
+      group-id: kitchen_group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        "[spring.json.trusted.packages]": "*"
+        "[spring.json.use.type.headers]": false
+        "[spring.json.value.default.type]": "com.rms.kitchen_service.dto.OrderMessageIncomming"
+
+  application:
+    name: kitchen-service
+
+logging:
+  level:
+    "[com.rms.kitchen_service]": DEBUG
+    "[org.springframework.kafka]": DEBUG

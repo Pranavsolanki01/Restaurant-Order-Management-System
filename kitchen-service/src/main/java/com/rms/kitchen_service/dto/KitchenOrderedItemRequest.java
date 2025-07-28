@@ -1,5 +1,7 @@
 package com.rms.kitchen_service.dto;
 
+import java.math.BigDecimal;
+
 import com.rms.kitchen_service.enums.StatusEnum;
 
 import lombok.AllArgsConstructor;
@@ -26,5 +28,9 @@ public class KitchenOrderedItemRequest {
     private StatusEnum status;
 
     private String specialRequests;
+
+    private BigDecimal totalPrice;
+
+    private BigDecimal unitPrice;
 
 }

@@ -9,13 +9,14 @@ public class KitchenOrderRequestToKitchenOrderMapper {
 
         KitchenOrder ko = new KitchenOrder();
         ko.setOrderID(kor.getOrderID());
+        ko.setTotalPrice(kor.getTotalPrice());
         ko.setStatus(kor.getStatus());
         ko.setCreatedAt(kor.getCreatedAt());
-        ko.setSpecialInstructuction(kor.getSpecialInstructuction());
+        ko.setSpecialInstructions(kor.getSpecialInstructions());
         ko.setUpdatedAt(kor.getUpdatedAt());
         ko.setUserID(kor.getUserID());
-        ko.setTableID(kor.getTableID());
-        ko.setUserName(kor.getUserName());
+        // ko.setTableID(kor.getTableID());
+        ko.setUserEmail(kor.getUserEmail());
         return ko;
 
     }
