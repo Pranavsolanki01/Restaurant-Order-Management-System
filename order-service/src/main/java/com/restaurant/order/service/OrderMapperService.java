@@ -94,6 +94,7 @@ public class OrderMapperService implements IOrderMapperService {
                                 .paymentStatus(order.getPaymentStatus().name())
                                 .orderItems(orderItemEvents)
                                 .timestamp(LocalDateTime.now())
+                                .specialInstructions(order.getSpecialInstructions())
                                 .build();
         }
 
@@ -104,6 +105,7 @@ public class OrderMapperService implements IOrderMapperService {
                                 .quantity(orderItem.getQuantity())
                                 .unitPrice(orderItem.getUnitPrice())
                                 .totalPrice(orderItem.getPrice())
+                                .specialRequests(orderItem.getSpecialRequests())
                                 .build();
         }
 }
