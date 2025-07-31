@@ -9,6 +9,7 @@ spring:
   kafka:
     bootstrap-servers: 100.85.205.36:9092
     consumer:
+      enable-auto-commit: true
       group-id: kitchen_group
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

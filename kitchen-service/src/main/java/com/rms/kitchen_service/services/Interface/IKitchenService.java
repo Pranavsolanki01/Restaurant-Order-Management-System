@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rms.kitchen_service.dto.KitchenOrderRequest;
 import com.rms.kitchen_service.dto.KitchenOrderedItemRequest;
+import com.rms.kitchen_service.entity.KitchenOrder;
 import com.rms.kitchen_service.entity.KitchenOrderedItem;
 import com.rms.kitchen_service.enums.StatusEnum;
 
@@ -12,6 +13,8 @@ public interface IKitchenService {
     public String saveKitchenOrder(KitchenOrderRequest kor);
 
     public void saveKitchenOrderedItem(List<KitchenOrderedItemRequest> koir);
+
+    public List<KitchenOrder> getAllOrders();
 
     public boolean updateItemStatus(String id, StatusEnum status);
 
