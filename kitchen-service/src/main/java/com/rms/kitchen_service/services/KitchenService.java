@@ -86,4 +86,9 @@ public class KitchenService implements IKitchenService{
         }
     }
 
+    @Override
+    public List<KitchenOrder> getAllOrders() {
+        return kitchenOrderRepo.findAll();
+    }
+
 }

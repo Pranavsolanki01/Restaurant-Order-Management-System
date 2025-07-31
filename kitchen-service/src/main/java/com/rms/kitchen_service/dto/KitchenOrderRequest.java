@@ -3,7 +3,6 @@ package com.rms.kitchen_service.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.rms.kitchen_service.enums.StatusEnum;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +32,6 @@ public class KitchenOrderRequest {
 
     private LocalDateTime createdAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Kolkata")
     private LocalDateTime updatedAt;
 
 }

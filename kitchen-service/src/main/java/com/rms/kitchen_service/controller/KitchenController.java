@@ -4,18 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rms.kitchen_service.entity.KitchenOrder;
 import com.rms.kitchen_service.entity.KitchenOrderedItem;
 import com.rms.kitchen_service.enums.StatusEnum;
 import com.rms.kitchen_service.services.Interface.IKitchenService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/kitchen")
@@ -65,5 +68,13 @@ public class KitchenController {
         return ResponseEntity.ok("Order Status updated successfully (SERVED)");
 
     }
+
+    @GetMapping("/allOrders")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all orders", description = "Show all orders")
+    public List<KitchenOrder> getAll() {
+        return kitchenService.getAllOrders();
+    }
+    
 
 }
