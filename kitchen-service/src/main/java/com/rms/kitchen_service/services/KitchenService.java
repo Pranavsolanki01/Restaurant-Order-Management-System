@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.rms.kitchen_service.dto.KitchenOrderRequest;
 import com.rms.kitchen_service.dto.KitchenOrderedItemRequest;
+import com.rms.kitchen_service.dto.NotificationService;
 import com.rms.kitchen_service.entity.KitchenOrder;
 import com.rms.kitchen_service.entity.KitchenOrderedItem;
 import com.rms.kitchen_service.enums.StatusEnum;
 import com.rms.kitchen_service.mapper.KitchenOrderRequestToKitchenOrderMapper;
 import com.rms.kitchen_service.mapper.KitchenOrderedItemRequestToKitchenOrderedItemMapper;
+import com.rms.kitchen_service.mapper.KithcenOrderToNotificationServiceMapper;
+import com.rms.kitchen_service.producers.NotificationProducer;
 import com.rms.kitchen_service.repo.KitchenOrderRepo;
 import com.rms.kitchen_service.repo.KitchenOrderedItemRepo;
 import com.rms.kitchen_service.services.Interface.IKitchenService;
@@ -27,6 +30,10 @@ public class KitchenService implements IKitchenService{
 
     @Autowired
     private final KitchenOrderedItemRepo kitchenOrderedItemRepo;
+
+    @Autowired
+    private final NotificationProducer notificationProducer;
+
 
     @Override
     public String saveKitchenOrder(KitchenOrderRequest kor) {
@@ -57,7 +64,7 @@ public class KitchenService implements IKitchenService{
     }
 
     @Override
-    public boolean updateKitchenOrderStatus(String id, StatusEnum status) {
+    public KitchenOrder updateKitchenOrderStatus(String id, StatusEnum status) {
 
         long count = kitchenOrderedItemRepo.countByKitchenOrderID(id);
 
@@ -67,28 +74,40 @@ public class KitchenService implements IKitchenService{
             KitchenOrder ko = kitchenOrderRepo.findById(id)
                     .orElseThrow(() -> new RuntimeException("Order with ID " + id + " not found"));
             ko.setStatus(StatusEnum.READY_TO_SERVE);
-            return kitchenOrderRepo.save(ko)!= null;
+            kitchenOrderRepo.save(ko);
+
+            return ko;
         }
-        return false;
+        return null;
     }
 
     @Override
-    public boolean completeOrder(String id) {
+    public KitchenOrder completeOrder(String id) {
         KitchenOrder ko = kitchenOrderRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order with ID " + id + " not found"));
         if(ko.getStatus() == StatusEnum.READY_TO_SERVE)
         {
             ko.setStatus(StatusEnum.SERVED);
-            return kitchenOrderRepo.save(ko) != null;
+            kitchenOrderRepo.save(ko);
+            return ko;
         }
         else{
-            return false;
+            return null;
         }
     }
 
     @Override
     public List<KitchenOrder> getAllOrders() {
         return kitchenOrderRepo.findAll();
+    }
+
+    @Override
+    public void producerService(KitchenOrder message) {
+
+        NotificationService notificationService = KithcenOrderToNotificationServiceMapper.mapper(message);
+        notificationService.setOrderedItems(kitchenOrderedItemRepo.findByKitchenOrderID(message.getId()));
+
+        notificationProducer.sendMessage(notificationService);
     }
 
 }

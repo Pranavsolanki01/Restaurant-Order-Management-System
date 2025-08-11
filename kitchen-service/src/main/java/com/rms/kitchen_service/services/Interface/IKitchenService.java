@@ -20,10 +20,10 @@ public interface IKitchenService {
 
     public List<KitchenOrderedItem> getKitchenOrderStatus(String id);
 
-    public boolean updateKitchenOrderStatus(String id, StatusEnum status);
+    public KitchenOrder updateKitchenOrderStatus(String id, StatusEnum status);
 
-    public boolean completeOrder(String id);
+    public KitchenOrder completeOrder(String id);
 
-    // public void publishEvent();
+    public void producerService(KitchenOrder message);
 
 }
