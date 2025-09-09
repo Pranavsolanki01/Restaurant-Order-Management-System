@@ -50,13 +50,10 @@ public class KitchenController {
     @Operation(summary = "Update order", description = "Update the order by changing its status to READY, using kitchenOrderID")
     public ResponseEntity<?> changeOrderStatus(@PathVariable String id) {
         
-        KitchenOrder isChanged=kitchenService.updateKitchenOrderStatus(id, StatusEnum.READY);
+        boolean isChanged=kitchenService.updateKitchenOrderStatus(id, StatusEnum.READY);
         
-        if(isChanged == null)
+        if(!isChanged)
             return ResponseEntity.ok("Status not updated, items yet to be prepared!...");
-
-        
-        kitchenService.producerService(isChanged);
         return ResponseEntity.ok("Order Status updated successfully (READY_TO_SERVE)");
     }
 
@@ -64,12 +61,10 @@ public class KitchenController {
     @Operation(summary = "Complete Order", description = "Complete the order by changing its status to SERVED, using kitchenOrderID")
     public ResponseEntity<?> completeOrder(@PathVariable String id) {
         
-        KitchenOrder isChanged=kitchenService.completeOrder(id);
+        boolean isChanged=kitchenService.completeOrder(id);
         
-        if(isChanged == null)
+        if(!isChanged)
             return ResponseEntity.ok("Status not updated, Order is not ready yet...");
-
-        kitchenService.producerService(isChanged);
         return ResponseEntity.ok("Order Status updated successfully (SERVED)");
 
     }
