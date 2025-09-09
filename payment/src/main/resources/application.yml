@@ -1,0 +1,94 @@
+server:
+  port: ${SERVER_PORT:8085}
+
+spring:
+  application:
+    name: payment-service
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: jdbc:mysql://100.85.205.36:3306/rmsdb?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:100.85.205.36:9092}
+    consumer:
+      group-id: payment-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}
+  issuer: ${JWT_ISSUER:restaurant-auth-service}
+  validate-issuer: ${JWT_VALIDATE_ISSUER:false} # Add this line
+
+# # Razorpay Configuration
+# razorpay:
+#   key:
+#     id: ${RAZORPAY_KEY_ID:rzp_test_your_key_id}
+#     secret: ${RAZORPAY_KEY_SECRET:your_key_secret}
+#   webhook:
+#     secret: ${RAZORPAY_WEBHOOK_SECRET:your_webhook_secret}
+
+# # Application Specific Settings
+# payment:
+#   default-currency: INR
+#   webhook:
+#     path: /api/payment/webhook/razorpay
+
+# # Logging Configuration
+# logging:
+#   level:
+#     com.restaurant.payment: ${LOG_LEVEL:DEBUG}
+#     org.springframework.kafka: INFO
+#     org.springframework.security: DEBUG
+#     com.razorpay: DEBUG
+#     root: INFO
+
+# ---
+# # Development Profile
+# spring:
+#   config:
+#     activate:
+#       on-profile: dev
+
+# logging:
+#   level:
+#     com.restaurant.payment: DEBUG
+#     org.springframework.web: DEBUG
+
+# ---
+# # Production Profile
+# spring:
+#   config:
+#     activate:
+#       on-profile: prod
+#   jpa:
+#     show-sql: false
+#     properties:
+#       hibernate:
+#         format_sql: false
+
+# logging:
+#   level:
+#     com.restaurant.payment: INFO
+#     root: WARN
