@@ -1,4 +1,4 @@
-# Simple Restaurant Order Management System #
+# Restaurant Order Management System #
 
 ## Introduction ##
  A Simple Restaurant Order Management System is a basic application designed to help manage restaurant orders efficiently. 
